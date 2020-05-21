@@ -8,7 +8,8 @@ Object.keys(botCommands).map(key => {
   bot.commands.set(botCommands[key].name, botCommands[key]);
 });
 
-const TOKEN = process.env.TOKEN;
+// const TOKEN = process.env.TOKEN;
+const TOKEN = process.env.BOT_TOKEN;//BOT_TOKEN is the Client Secret
 
 bot.login(TOKEN);
 
