@@ -18,11 +18,11 @@ module.exports = {
   description: 'Manages leaderboards for anything following the format',
   execute(msg, args) {
     var admin = require("firebase-admin");
-    var db = admin.database();
+    var db = admin.database().ref("leaderboards");
 
     msg.channel.send(`Fetching data...`);
 
-    db.ref("leaderboards").once("value", function(snapshot) {
+    db.once("value", function(snapshot) {
       if (args.length == 0) {
         var leaderboards = "";
         snapshot.forEach(function(childSnapshot) { leaderboards += childSnapshot.key + "\n"} )
@@ -40,18 +40,24 @@ module.exports = {
           return;
         }
         
-        ref.child(leaderboardName).child().set({
+        db.child(leaderboardName).child().set({
           username: "creation_entry",
           score: 0
         })
 
         msg.channel.send(`Leaderboard made!`);
-      } else if (args[0].toLowerCase() === 'destroy') {
-        if (!snapshot.hasChild(leaderboardName)) {
+      } else if (args[0].toLowerCase() === 'delete') {
+        var leaderboardName = args[1];
+
+        if  (typeof leaderboardName == 'undefined') {
+          msg.channel.send(`Missing leaderboard name.  Invoke \"!leaderboard LEADERBOARD_NAME\"`);
+          return;
+        } else if (!snapshot.hasChild(leaderboardName)) {
           msg.channel.send(`This leaderboard does not exist.`);
           return;
         }
-        // delete leaderboard
+
+        db.child(leaderboardName).set();
       } else if (args[0].toLowerCase() === 'addTo') {
         // check if leaderboard exists
         // add entry
