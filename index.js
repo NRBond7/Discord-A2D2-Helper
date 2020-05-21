@@ -10,6 +10,7 @@ admin.initializeApp({
   credential: admin.credential.cert({
     "private_key": process.env.FIREBASE_PRIVATE_KEY,
     "client_email": process.env.FIREBASE_CLIENT_EMAIL,
+    "project_id": "a2d2-bot"
   }),
   databaseURL: "https://a2d2-bot.firebaseio.com"
 });
