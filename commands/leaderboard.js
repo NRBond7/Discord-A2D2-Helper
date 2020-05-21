@@ -65,7 +65,7 @@ module.exports = {
           return;
         }
 
-        snapshot.child(leaderboardName).remove();
+        db.ref(leaderboardName).remove();
         msg.channel.send(`Leaderboard deleted`);
       } else if (args[0].toLowerCase() === 'addTo') {
         // check if leaderboard exists
