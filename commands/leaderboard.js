@@ -88,7 +88,7 @@ module.exports = {
         }
 
         var leaderboardStandings = "";
-        leaderboardStandings += `\`\`\`**${leaderboardName} Top 10**\n`;
+        leaderboardStandings += `\`\`\`${leaderboardName} Top 10\n`;
         leaderboardStandings += `----------------------------------------\n`;
 
         var sortingType = snapshot.child(leaderboardName).val().sort_type;
@@ -102,9 +102,10 @@ module.exports = {
               var spaceAmount = `${element.username}`.length + `${element.score}`.length;
               var space = new Array(NUM_ENTRY_CHARACTERS - spaceAmount).join(' ');
               var entry = `${element.username}${space}${element.score}\n`;
-              console.info(entry);
               leaderboardStandings += entry;
               console.info(leaderboardStandings);
+              leaderboardStandings += `----------------------------------------\`\`\`\n`;
+              msg.channel.send(leaderboardStandings);
             });
           });
         } else {
@@ -113,15 +114,13 @@ module.exports = {
               var spaceAmount = `${childSnapshot.val().username}`.length + `${childSnapshot.val().score}`.length;
               var space = new Array(NUM_ENTRY_CHARACTERS - spaceAmount).join(' ');
               var entry = `${childSnapshot.val().username}${space}${childSnapshot.val().score}\n`;
-              console.info(entry);
               leaderboardStandings += entry;
               console.info(leaderboardStandings);
+              leaderboardStandings += `----------------------------------------\`\`\`\n`;
+              msg.channel.send(leaderboardStandings);
             });
           });
         }
-        
-        leaderboardStandings += `----------------------------------------\`\`\`\n`;
-        msg.channel.send(leaderboardStandings);
       }
     })
   },
