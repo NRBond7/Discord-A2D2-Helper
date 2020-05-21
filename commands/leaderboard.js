@@ -40,10 +40,10 @@ module.exports = {
           return;
         }
         
-        db.child(leaderboardName).child().set({
+        db.child(leaderboardName).push({
           username: "creation_entry",
           score: 0
-        })
+        });
 
         msg.channel.send(`Leaderboard made!`);
       } else if (args[0].toLowerCase() === 'delete') {
