@@ -86,12 +86,30 @@ module.exports = {
           return;
         }
 
-        var leaderboardStandings = `${leaderboardName} standings\n`;
-        leaderboardStandings += `------------------------------------------`;
-        db.child(`${leaderboardName}/entries`).orderByChild("score").once("value", function(snapshot) {
-          snapshot.forEach(function(childSnapshot) { leaderboardStandings += `${childSnapshot.val().username} ${childSnapshot.val().score}` + "\n"} )
-          msg.channel.send(leaderboardStandings);
-        });
+        var leaderboardStandings = `${leaderboardName} Top 10\n`;
+        leaderboardStandings += `------------------------------------------\n`;
+
+        var sortingType = snapshot.child(leaderboardName).val().sort_type;
+        if (sortingType === 'highest') {
+          db.child(`${leaderboardName}/entries`).orderByChild("score").limitToLast(10).once("value", function(snapshot) {
+            console.info(JSON.stringify(snapshot.exportVal()));
+            // var reversedData = snapshot.exportVal().sort(function compare(a, b) {
+            //   if (a > b) return 1;
+            //   if (b > a) return -1;
+            //   return 0;
+            // })
+
+            snapshot.forEach(function(childSnapshot) { leaderboardStandings += `${childSnapshot.val().username} ${childSnapshot.val().score}` + "\n"} )
+            leaderboardStandings += `------------------------------------------\n`;
+            msg.channel.send(leaderboardStandings);
+          });
+        } else {
+          db.child(`${leaderboardName}/entries`).orderByChild("score").limitToFirst(10).once("value", function(snapshot) {
+            snapshot.forEach(function(childSnapshot) { leaderboardStandings += `${childSnapshot.val().username} ${childSnapshot.val().score}` + "\n"} )
+            leaderboardStandings += `------------------------------------------\n`;
+            msg.channel.send(leaderboardStandings);
+          });
+        }
       }
     })
   },
