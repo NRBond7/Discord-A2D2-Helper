@@ -20,22 +20,24 @@ module.exports = {
     var admin = require("firebase-admin");
     var db = admin.database();
 
-    msg.channel.send(`Fetching leaderboards...`);
+    msg.channel.send(`Fetching data...`);
 
     db.ref("leaderboards").once("value", function(snapshot) {
       if (args.length == 0) {
         var leaderboards = "";
-        snapshot.forEach(function(childSnapshot) { leaderboards += childSnapshot.key + "\n "} )
+        snapshot.forEach(function(childSnapshot) { leaderboards += childSnapshot.key + "\n"} )
         msg.channel.send(`Here are the existing leaderboards:\n${leaderboards}`);
       } else if (args[0].toLowerCase() === 'help') {
         msg.author.send(HELP_MESSAGE);
       } else if (args[0].toLowerCase() === 'create') {
-        var leaderboardName = arg[1];
+        var leaderboardName = args[1];
 
         if  (typeof leaderboardName == 'undefined') {
           msg.channel.send(`Missing leaderboard name.  Invoke \"!leaderboard LEADERBOARD_NAME\"`);
+          return;
         } else if (snapshot.hasChild(leaderboardName)) {
           msg.channel.send(`This leaderboard already exists`);
+          return;
         }
         
         ref.child(leaderboardName).child().set({
@@ -45,7 +47,10 @@ module.exports = {
 
         msg.channel.send(`Leaderboard made!`);
       } else if (args[0].toLowerCase() === 'destroy') {
-        // check if leaderboard exists
+        if (!snapshot.hasChild(leaderboardName)) {
+          msg.channel.send(`This leaderboard does not exist.`);
+          return;
+        }
         // delete leaderboard
       } else if (args[0].toLowerCase() === 'addTo') {
         // check if leaderboard exists
