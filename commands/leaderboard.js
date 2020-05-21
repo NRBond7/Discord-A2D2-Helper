@@ -54,6 +54,6 @@ module.exports = {
     // } else {
     //   // fetch leaderboard of name arg0
     //   // return and sort entries
-    }
+    // }
   },
 };
