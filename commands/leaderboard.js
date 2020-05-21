@@ -6,8 +6,6 @@ module.exports = {
     var db = admin.database();
     var ref = db.ref("leaderboards");
 
-    msg.channel.send(`Entered: ${args}`);
-
     if (args.length == 0) {
       // todo: print off existing leaderboards
       msg.channel.send(`Fetching leaderboards...`);
@@ -17,7 +15,7 @@ module.exports = {
         snapshot.forEach(function(childSnapshot) {
           var key = childSnapshot.key;
           leaderboards.push(childSnapshot.key);
-        }
+        })
         msg.channel.send(`Here are the existing leaderboards:\n
 ${leaderboards}
           `);
