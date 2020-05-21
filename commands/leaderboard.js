@@ -23,13 +23,13 @@ module.exports = {
     msg.channel.send(`Fetching data...`);
 
     db.once("value", function(snapshot) {
-      if (args.length == 0) {
+      if (args.length == 0) { // no parameters passed-in
         var leaderboards = "";
         snapshot.forEach(function(childSnapshot) { leaderboards += childSnapshot.key + "\n"} )
         msg.channel.send(`Here are the existing leaderboards:\n${leaderboards}`);
-      } else if (args[0].toLowerCase() === 'help') {
+      } else if (args[0].toLowerCase() === 'help') { // help
         msg.author.send(HELP_MESSAGE);
-      } else if (args[0].toLowerCase() === 'create') {
+      } else if (args[0].toLowerCase() === 'create') { // create
         var leaderboardName = args[1];
         var sortType = args[2];
 
@@ -54,7 +54,7 @@ module.exports = {
         });
 
         msg.channel.send(`Leaderboard made!`);
-      } else if (args[0].toLowerCase() === 'delete') {
+      } else if (args[0].toLowerCase() === 'delete') { // delete
         var leaderboardName = args[1];
 
         if  (typeof leaderboardName == 'undefined') {
@@ -72,15 +72,26 @@ module.exports = {
           .catch(function(error) {
             msg.channel.send(`Failed to delete leaderboard`);
           });
-      } else if (args[0].toLowerCase() === 'addTo') {
+      } else if (args[0].toLowerCase() === 'addTo') { // addTo
         // check if leaderboard exists
         // add entry
-      } else if (args[0].toLowerCase() === 'removeFrom') {
+      } else if (args[0].toLowerCase() === 'removeFrom') { // removeFrom
         // check if leaderboard exists
         // remove matching entry
-      } else {
-        // fetch leaderboard of name arg0
-        // return and sort entries
+      } else { // get specific leaderboard's data
+        var leaderboardName = args[0];
+
+        if (!snapshot.hasChild(leaderboardName)) {
+          msg.channel.send(`This leaderboard does not exist`);
+          return;
+        }
+
+        var leaderboardStandings = `${leaderboardName} standings\n`;
+        leaderboardStandings += `------------------------------------------`;
+        db.child(`${leaderboardName}/entries`).orderByChild("score").once("value", function(snapshot) {
+          snapshot.forEach(function(childSnapshot) { leaderboardStandings += `${childSnapshot.val().username} ${childSnapshot.val().score}` + "\n"} )
+          msg.channel.send(leaderboardStandings);
+        });
       }
     })
   },
