@@ -104,9 +104,9 @@ module.exports = {
               var entry = `${element.username}${space}${element.score}\n`;
               leaderboardStandings += entry;
             });
+            leaderboardStandings += `----------------------------------------\`\`\`\n`;
+            msg.channel.send(leaderboardStandings);
           });
-          leaderboardStandings += `----------------------------------------\`\`\`\n`;
-          msg.channel.send(leaderboardStandings);
         } else {
           db.child(`${leaderboardName}/entries`).orderByChild("score").limitToFirst(10).once("value", function(snapshot) {
             snapshot.forEach(function(childSnapshot) { 
@@ -115,9 +115,9 @@ module.exports = {
               var entry = `${childSnapshot.val().username}${space}${childSnapshot.val().score}\n`;
               leaderboardStandings += entry;
             });
+            leaderboardStandings += `----------------------------------------\`\`\`\n`;
+            msg.channel.send(leaderboardStandings);
           });
-          leaderboardStandings += `----------------------------------------\`\`\`\n`;
-          msg.channel.send(leaderboardStandings);
         }
       }
     })
