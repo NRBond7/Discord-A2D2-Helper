@@ -11,8 +11,9 @@ module.exports = {
       }),
       databaseURL: process.env.FIREBASE_DATABASE_URL
     });
-    
+    var db = admin.database();
     var ref = db.ref("leaderboards");
+    
     msg.channel.send(`Entered: ${args}`);
 
     if (args.length == 0) {
