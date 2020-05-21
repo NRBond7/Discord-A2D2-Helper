@@ -87,7 +87,8 @@ module.exports = {
           return;
         }
 
-        var leaderboardStandings = `\`\`\`**${leaderboardName} Top 10**\n`;
+        var leaderboardStandings = "";
+        leaderboardStandings += `\`\`\`**${leaderboardName} Top 10**\n`;
         leaderboardStandings += `----------------------------------------\n`;
 
         var sortingType = snapshot.child(leaderboardName).val().sort_type;
@@ -103,6 +104,7 @@ module.exports = {
               var entry = `${element.username}${space}${element.score}\n`;
               console.info(entry);
               leaderboardStandings += entry;
+              console.info(leaderboardStandings);
             });
           });
         } else {
@@ -113,6 +115,7 @@ module.exports = {
               var entry = `${childSnapshot.val().username}${space}${childSnapshot.val().score}\n`;
               console.info(entry);
               leaderboardStandings += entry;
+              console.info(leaderboardStandings);
             });
           });
         }
