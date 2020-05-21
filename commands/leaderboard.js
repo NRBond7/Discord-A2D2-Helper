@@ -61,11 +61,12 @@ module.exports = {
           msg.channel.send(`Missing leaderboard name.  Invoke \"!leaderboard delete LEADERBOARD_NAME\"`);
           return;
         } else if (!snapshot.hasChild(leaderboardName)) {
-          msg.channel.send(`This leaderboard does not exist.`);
+          msg.channel.send(`This leaderboard does not exist`);
           return;
         }
 
-        db.child(leaderboardName).remove();
+        snapshot.child(leaderboardName).remove();
+        msg.channel.send(`Leaderboard deleted`);
       } else if (args[0].toLowerCase() === 'addTo') {
         // check if leaderboard exists
         // add entry
