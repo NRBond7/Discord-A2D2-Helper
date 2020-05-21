@@ -45,10 +45,10 @@ module.exports = {
           sortType = "highest";
         }
         db.child(leaderboardName).update({
-          sort_type: sortType.toLowerCase,
+          sort_type: sortType.toLowerCase(),
         });
 
-        db.child(leaderboardName).push({
+        db.child(leaderboardName).child("entries").push({
           username: "creation_entry",
           score: 0
         });
