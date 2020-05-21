@@ -10,10 +10,16 @@ module.exports = {
 
     if (args.length == 0) {
       // todo: print off existing leaderboards
+      msg.channel.send(`Fetching leaderboards...`);
       ref.once("value", function(snapshot) {
         console.log(snapshot.val());
+        var leaderboards = [];
+        snapshot.forEach(function(childSnapshot) {
+          var key = childSnapshot.key;
+          leaderboards.push(childSnapshot.key);
+        }
         msg.channel.send(`Here are the existing leaderboards:\n
-${snapshot.val()}
+${leaderboards}
           `);
       });
     } else if (args[0].toLowerCase() === 'help') {
