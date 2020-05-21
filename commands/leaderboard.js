@@ -65,8 +65,13 @@ module.exports = {
           return;
         }
 
-        db.ref(leaderboardName).remove();
-        msg.channel.send(`Leaderboard deleted`);
+        db.child(leaderboardName).remove()
+          .then(function() {
+            msg.channel.send(`Leaderboard deleted`);
+          })
+          .catch(function(error) {
+            msg.channel.send(`Failed to delete leaderboard`);
+          });
       } else if (args[0].toLowerCase() === 'addTo') {
         // check if leaderboard exists
         // add entry
