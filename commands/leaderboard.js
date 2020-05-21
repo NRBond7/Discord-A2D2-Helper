@@ -41,6 +41,9 @@ module.exports = {
           return;
         }
 
+        if (typeof sortType == 'undefined') {
+          sortType = "highest";
+        }
         db.child(leaderboardName).update({
           sort_type: sortType.toLowerCase,
         });
