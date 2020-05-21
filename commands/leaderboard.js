@@ -12,6 +12,7 @@ Example: \"!leaderboard addto PunsLeaderboard A2D2Bot 9000\"\n\n
 To remove an entry to existing leaderboard:\n
 \"!leaderboard removefrom LEADERBOARD_NAME USERNAME LEAADERBOARD_VALUE\"\n
 Example: \"!leaderboard removefrom PunsLeaderboard A2D2Bot 9000\"\n\n`;
+const NUM_ENTRY_CHARACTERS = 40;
 
 module.exports = {
   name: '!leaderboard',
@@ -87,7 +88,7 @@ module.exports = {
         }
 
         var leaderboardStandings = `${leaderboardName} Top 10\n`;
-        leaderboardStandings += `------------------------------------------\n`;
+        leaderboardStandings += `----------------------------------------\n`;
 
         var sortingType = snapshot.child(leaderboardName).val().sort_type;
         if (sortingType === 'highest') {
@@ -96,14 +97,24 @@ module.exports = {
             snapshot.forEach(function(childSnapshot) { data.push({username: childSnapshot.val().username, score: childSnapshot.val().score })})
             var reversedData = data.sort(function (a, b) { return b.score - a.score; });
 
-            reversedData.forEach(element => { leaderboardStandings += `${element.username} ${element.score}` + "\n"} )
-            leaderboardStandings += `------------------------------------------\n`;
+            reversedData.forEach(element => {
+              var spaceAmount = `${element.username}`.length + `${element.score}`.length;
+              var space = new Array(NUM_ENTRY_CHARACTERS - spaceAmount).join(' ');
+              var entry = `${element.username}${space}${element.score}` + "\n";
+              leaderboardStandings += entry;
+            });
+            leaderboardStandings += `----------------------------------------\n`;
             msg.channel.send(leaderboardStandings);
           });
         } else {
           db.child(`${leaderboardName}/entries`).orderByChild("score").limitToFirst(10).once("value", function(snapshot) {
-            snapshot.forEach(function(childSnapshot) { leaderboardStandings += `${childSnapshot.val().username} ${childSnapshot.val().score}` + "\n"} )
-            leaderboardStandings += `------------------------------------------\n`;
+            snapshot.forEach(function(childSnapshot) { 
+              var spaceAmount = `${childSnapshot.val().username}`.length + `${childSnapshot.val().score}`.length;
+              var space = new Array(NUM_ENTRY_CHARACTERS - spaceAmount).join(' ');
+              var entry = `${childSnapshot.val().username}${space}${childSnapshot.val().score}` + "\n";
+              leaderboardStandings += entry;
+            });
+            leaderboardStandings += `----------------------------------------\n`;
             msg.channel.send(leaderboardStandings);
           });
         }
