@@ -1,4 +1,5 @@
-const HELP_MESSAGE = `Welcome to A2D2 Bot\'s leaderboard!\n\n
+const HELP_MESSAGE = 
+`Welcome to A2D2 Bot\'s leaderboard!\n\n
 A leaderboard can be looked-up using:\n
 \"!leaderboard LEADERBOARD_NAME\"\n\n
 To create a leaderboard:\n
@@ -19,41 +20,43 @@ module.exports = {
     var admin = require("firebase-admin");
     var db = admin.database();
 
-    msg.channel.send(`A2D2 Leaderboard Bot`);
-    if (args.length == 0) {
-      var ref = db.ref("leaderboards");
-      msg.channel.send(`Fetching leaderboards...`);
-      ref.once("value", function(snapshot) {
-        console.log(snapshot.val());
-        var leaderboards = [];
-        snapshot.forEach(function(childSnapshot) {
-          var key = childSnapshot.key;
-          leaderboards.push(childSnapshot.key);
-        })
-        msg.channel.send(`Here are the existing leaderboards:\n${leaderboards}`);
-      });
-    } 
-    // else if (args[0].toLowerCase() === 'help') {
-    //   msg.author.send(HELP_MESSAGE);
-    // } else if (args[0].toLowerCase() === 'create') {
-    //   if  (typeof arg[1] == 'undefined') {
-    //     msg.channel.send(`Missing leaderboard name.  Invoke \"!leaderboard LEADERBOARD_NAME\"`);
-    //   }
+    msg.channel.send(`Fetching leaderboards...`);
 
-    //   // Check if leaderboard already exists
-    //   var leaderboardRef = db.ref(`leaderboards/${arg1}`);
-    //   // Check if user passed in arg1 and it's properly formatted
-    //   // Create leaderboard
-    //   // report back
-    // } else if (args[0].toLowerCase() === 'addTo') {
-    //   // check if leaderboard exists
-    //   // add entry
-    // } else if (args[0].toLowerCase() === 'removeFrom') {
-    //   // check if leaderboard exists
-    //   // remove matching entry
-    // } else {
-    //   // fetch leaderboard of name arg0
-    //   // return and sort entries
-    // }
+    db.ref("leaderboards").once("value", function(snapshot) {
+      if (args.length == 0) {
+        var leaderboards = "";
+        snapshot.forEach(function(childSnapshot) { leaderboards += childSnapshot.key + "\n "} )
+        msg.channel.send(`Here are the existing leaderboards:\n${leaderboards}`);
+      } else if (args[0].toLowerCase() === 'help') {
+        msg.author.send(HELP_MESSAGE);
+      } else if (args[0].toLowerCase() === 'create') {
+        var leaderboardName = arg[1];
+
+        if  (typeof leaderboardName == 'undefined') {
+          msg.channel.send(`Missing leaderboard name.  Invoke \"!leaderboard LEADERBOARD_NAME\"`);
+        } else if (snapshot.hasChild(leaderboardName)) {
+          msg.channel.send(`This leaderboard already exists`);
+        }
+        
+        ref.child(leaderboardName).child().set({
+          username: "creation_entry",
+          score: 0
+        })
+
+        msg.channel.send(`Leaderboard made!`);
+      } else if (args[0].toLowerCase() === 'destroy') {
+        // check if leaderboard exists
+        // delete leaderboard
+      } else if (args[0].toLowerCase() === 'addTo') {
+        // check if leaderboard exists
+        // add entry
+      } else if (args[0].toLowerCase() === 'removeFrom') {
+        // check if leaderboard exists
+        // remove matching entry
+      } else {
+        // fetch leaderboard of name arg0
+        // return and sort entries
+      }
+    })
   },
 };
