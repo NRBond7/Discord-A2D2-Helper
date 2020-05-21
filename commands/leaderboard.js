@@ -87,8 +87,8 @@ module.exports = {
           return;
         }
 
-        var leaderboardStandings = `\`**${leaderboardName} Top 10**\n\``;
-        leaderboardStandings += `\`----------------------------------------\n\``;
+        var leaderboardStandings = `\`\*\*${leaderboardName} Top 10\*\*\`\n`;
+        leaderboardStandings += `\`----------------------------------------\`\n`;
 
         var sortingType = snapshot.child(leaderboardName).val().sort_type;
         if (sortingType === 'highest') {
@@ -99,8 +99,8 @@ module.exports = {
 
             reversedData.forEach(element => {
               var spaceAmount = `${element.username}`.length + `${element.score}`.length;
-              var space = new Array(NUM_ENTRY_CHARACTERS - spaceAmount).join('\xa0');
-              var entry = `\`${element.username}${space}${element.score}` + "\n\`";
+              var space = new Array(NUM_ENTRY_CHARACTERS - spaceAmount).join(' ');
+              var entry = `\`${element.username}${space}${element.score}` + "\`\n";
               leaderboardStandings += entry;
             });
           });
@@ -108,14 +108,14 @@ module.exports = {
           db.child(`${leaderboardName}/entries`).orderByChild("score").limitToFirst(10).once("value", function(snapshot) {
             snapshot.forEach(function(childSnapshot) { 
               var spaceAmount = `${childSnapshot.val().username}`.length + `${childSnapshot.val().score}`.length;
-              var space = new Array(NUM_ENTRY_CHARACTERS - spaceAmount).join('\xa0');
-              var entry = `\`${childSnapshot.val().username}${space}${childSnapshot.val().score}` + "\n\`";
+              var space = new Array(NUM_ENTRY_CHARACTERS - spaceAmount).join(' ');
+              var entry = `\`${childSnapshot.val().username}${space}${childSnapshot.val().score}` + "\`\n";
               leaderboardStandings += entry;
             });
           });
         }
         
-        leaderboardStandings += `\`----------------------------------------\n\``;
+        leaderboardStandings += `\`----------------------------------------\`\n`;
         msg.channel.send(leaderboardStandings);
       }
     })
