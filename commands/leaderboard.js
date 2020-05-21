@@ -7,6 +7,8 @@ module.exports = {
     if (args.length == 0) {
       msg.channel.send(`Missing arguments in leaderboard call.  type \"!leaderboard help\" for more info.`);
     } else if (args[0].toLowerCase() === 'help') {
+      // todo: send this to user in DM to prevent clutter?
+      // todo: add example to fetch leaderboard
       msg.channel.send(`
 Welcome to A2D2 Bot\'s leaderboard!\n\n
 A leaderboard can be looked-up using:\n
@@ -24,9 +26,10 @@ Example: \"!leaderboard removefrom PunsLeaderboard A2D2Bot 9000\"\n\n
       `);
     }
 
-    // arg0 - leaderboard name  
-    // arg1 - username
-    // arg2 - value
+    // arg0 command
+    // arg0/1 - leaderboard name
+    // arg2 - username
+    // arg3 - value
 
     // leaderboard code
 
