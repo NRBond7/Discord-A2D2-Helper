@@ -92,14 +92,13 @@ module.exports = {
         var sortingType = snapshot.child(leaderboardName).val().sort_type;
         if (sortingType === 'highest') {
           db.child(`${leaderboardName}/entries`).orderByChild("score").limitToLast(10).once("value", function(snapshot) {
-            console.info(`exportVal type: ${typeof snapshot.exportVal()}`);
-            // var reversedData = snapshot.exportVal().sort(function compare(a, b) {
-            //   if (a.score > b.score) return 1;
-            //   if (b.score > a.score) return -1;
-            //   return 0;
-            // });
+            var reversedData = Object.values(snapshot.exportVal().val).sort(function compare(a, b) {
+              if (a.score > b.score) return 1;
+              if (b.score > a.score) return -1;
+              return 0;
+            });
 
-            // reversedData.forEach(element => { leaderboardStandings += `${element.username} ${element.score}` + "\n"} )
+            reversedData.forEach(element => { leaderboardStandings += `${element.username} ${element.score}` + "\n"} )
             leaderboardStandings += `------------------------------------------\n`;
             msg.channel.send(leaderboardStandings);
           });
