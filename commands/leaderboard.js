@@ -92,7 +92,9 @@ module.exports = {
         var sortingType = snapshot.child(leaderboardName).val().sort_type;
         if (sortingType === 'highest') {
           db.child(`${leaderboardName}/entries`).orderByChild("score").limitToLast(10).once("value", function(snapshot) {
-            var reversedData = Object.values(snapshot.exportVal().val).sort(function compare(a, b) {
+            var data = [];
+            snapshot.forEach(function(childSnapshot) { data.push({username: childSnapshot.val().username, score: childSnapshot.val().score })})
+            var reversedData = data.sort(function compare(a, b) {
               if (a.score > b.score) return 1;
               if (b.score > a.score) return -1;
               return 0;
