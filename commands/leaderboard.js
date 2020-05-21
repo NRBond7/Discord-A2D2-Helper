@@ -20,6 +20,7 @@ module.exports = {
     var db = admin.database();
     var ref = db.ref("leaderboards");
 
+    msg.channel.send(`A2D2 Leaderboard Bot`);
     if (args.length == 0) {
       msg.channel.send(`Fetching leaderboards...`);
       ref.once("value", function(snapshot) {
