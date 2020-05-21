@@ -18,10 +18,10 @@ module.exports = {
   execute(msg, args) {
     var admin = require("firebase-admin");
     var db = admin.database();
-    var ref = db.ref("leaderboards");
 
     msg.channel.send(`A2D2 Leaderboard Bot`);
     if (args.length == 0) {
+      var ref = db.ref("leaderboards");
       msg.channel.send(`Fetching leaderboards...`);
       ref.once("value", function(snapshot) {
         console.log(snapshot.val());
@@ -32,38 +32,28 @@ module.exports = {
         })
         msg.channel.send(`Here are the existing leaderboards:\n${leaderboards}`);
       });
-    } else if (args[0].toLowerCase() === 'help') {
-      msg.author.send(HELP_MESSAGE);
-    } else if (args[0].toLowerCase() === 'create') {
-      if  (typeof arg[1] == 'undefined') {
-        msg.channel.send(`Missing leaderboard name.  Invoke \"!leaderboard LEADERBOARD_NAME\"`);
-      }
+    } 
+    // else if (args[0].toLowerCase() === 'help') {
+    //   msg.author.send(HELP_MESSAGE);
+    // } else if (args[0].toLowerCase() === 'create') {
+    //   if  (typeof arg[1] == 'undefined') {
+    //     msg.channel.send(`Missing leaderboard name.  Invoke \"!leaderboard LEADERBOARD_NAME\"`);
+    //   }
 
-      // Check if leaderboard already exists
-      db.ref(`leaderboards/${arg1}`)
-      // Check if user passed in arg1 and it's properly formatted
-      // Create leaderboard
-      // report back
-    } else if (args[0].toLowerCase() === 'addTo') {
-      // check if leaderboard exists
-      // add entry
-    } else if (args[0].toLowerCase() === 'removeFrom') {
-      // check if leaderboard exists
-      // remove matching entry
-    } else {
-      // fetch leaderboard of name arg0
-      // return and sort entries
+    //   // Check if leaderboard already exists
+    //   var leaderboardRef = db.ref(`leaderboards/${arg1}`);
+    //   // Check if user passed in arg1 and it's properly formatted
+    //   // Create leaderboard
+    //   // report back
+    // } else if (args[0].toLowerCase() === 'addTo') {
+    //   // check if leaderboard exists
+    //   // add entry
+    // } else if (args[0].toLowerCase() === 'removeFrom') {
+    //   // check if leaderboard exists
+    //   // remove matching entry
+    // } else {
+    //   // fetch leaderboard of name arg0
+    //   // return and sort entries
     }
-
-    // arg0 command
-    // arg0/1 - leaderboard name
-    // arg2 - username
-    // arg3 - value
-
-    // leaderboard code
-
-    // find leaderboard from arg0 or make if doesn't exist
-    // add new entry to leaderboard and sort
-    // return updated leaderboard to the discord channel
   },
 };
