@@ -94,11 +94,7 @@ module.exports = {
           db.child(`${leaderboardName}/entries`).orderByChild("score").limitToLast(10).once("value", function(snapshot) {
             var data = [];
             snapshot.forEach(function(childSnapshot) { data.push({username: childSnapshot.val().username, score: childSnapshot.val().score })})
-            var reversedData = data.sort(function compare(a, b) {
-              if (a.score < b.score) return 1;
-              if (b.score > a.score) return -1;
-              return 0;
-            });
+            var reversedData = data.sort(function (a, b) { return b.score - a.score; });
 
             reversedData.forEach(element => { leaderboardStandings += `${element.username} ${element.score}` + "\n"} )
             leaderboardStandings += `------------------------------------------\n`;
