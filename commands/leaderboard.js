@@ -5,7 +5,15 @@ module.exports = {
     msg.channel.send(`Entered: ${args}`);
 
     if (args.length == 0) {
-      msg.channel.send(`Missing arguments in leaderboard call.  type \"!leaderboard help\" for more info.`);
+      // todo: print off existing leaderboards
+      var db = admin.database();
+      var ref = db.ref("leaderboards");
+      ref.once("value", function(snapshot) {
+        console.log(snapshot.val());
+        msg.channel.send(`Here are the existing leaderboards:\n
+${snapshot.val()}
+          `);
+      });
     } else if (args[0].toLowerCase() === 'help') {
       // todo: send this to user in DM to prevent clutter?
       // todo: add example to fetch leaderboard

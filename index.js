@@ -14,19 +14,6 @@ admin.initializeApp({
   databaseURL: "https://a2d2-bot.firebaseio.com"
 });
 
-// var firebaseConfig = {
-//   apiKey: "AIzaSyCKk7Zvh-Ix8Th1p5NhR4G6f6b3fxL0_Y8",
-//   authDomain: "a2d2-bot.firebaseapp.com",
-//   databaseURL: "https://a2d2-bot.firebaseio.com",
-//   projectId: "a2d2-bot",
-//   storageBucket: "a2d2-bot.appspot.com",
-//   messagingSenderId: "540183404084",
-//   appId: "1:540183404084:web:27d232759ac2ea3167f461"
-// };
-// Initialize Firebase
-// firebase.initializeApp(firebaseConfig);
-
-
 Object.keys(botCommands).map(key => {
   bot.commands.set(botCommands[key].name, botCommands[key]);
 });
