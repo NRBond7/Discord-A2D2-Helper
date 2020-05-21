@@ -34,7 +34,7 @@ module.exports = {
         var sortType = args[2];
 
         if  (typeof leaderboardName == 'undefined') {
-          msg.channel.send(`Missing leaderboard name.  Invoke \"!leaderboard LEADERBOARD_NAME\"`);
+          msg.channel.send(`Missing leaderboard name.  Invoke \"!leaderboard create LEADERBOARD_NAME\"`);
           return;
         } else if (snapshot.hasChild(leaderboardName)) {
           msg.channel.send(`This leaderboard already exists`);
@@ -58,14 +58,14 @@ module.exports = {
         var leaderboardName = args[1];
 
         if  (typeof leaderboardName == 'undefined') {
-          msg.channel.send(`Missing leaderboard name.  Invoke \"!leaderboard LEADERBOARD_NAME\"`);
+          msg.channel.send(`Missing leaderboard name.  Invoke \"!leaderboard delete LEADERBOARD_NAME\"`);
           return;
         } else if (!snapshot.hasChild(leaderboardName)) {
           msg.channel.send(`This leaderboard does not exist.`);
           return;
         }
 
-        db.child(leaderboardName).set();
+        db.child(leaderboardName).remove();
       } else if (args[0].toLowerCase() === 'addTo') {
         // check if leaderboard exists
         // add entry
