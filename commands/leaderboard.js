@@ -2,12 +2,21 @@ module.exports = {
   name: '!leaderboard',
   description: 'Manages leaderboards for anything following the format',
   execute(msg, args) {
+    var admin = require("firebase-admin");
+    admin.initializeApp({
+      credential: admin.credential.cert({
+        "private_key": process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+        "client_email": process.env.FIREBASE_CLIENT_EMAIL,
+        "project_id": process.env.FIREBASE_PROJECT_ID,
+      }),
+      databaseURL: process.env.FIREBASE_DATABASE_URL
+    });
+    
+    var ref = db.ref("leaderboards");
     msg.channel.send(`Entered: ${args}`);
 
     if (args.length == 0) {
       // todo: print off existing leaderboards
-      var db = admin.database();
-      var ref = db.ref("leaderboards");
       ref.once("value", function(snapshot) {
         console.log(snapshot.val());
         msg.channel.send(`Here are the existing leaderboards:\n
