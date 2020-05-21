@@ -23,7 +23,7 @@ ${leaderboards}
     } else if (args[0].toLowerCase() === 'help') {
       // todo: send this to user in DM to prevent clutter?
       // todo: add example to fetch leaderboard
-      msg.channel.send(`
+      msg.author.send(`
 Welcome to A2D2 Bot\'s leaderboard!\n\n
 A leaderboard can be looked-up using:\n
 \"!leaderboard LEADERBOARD_NAME\"\n\n
