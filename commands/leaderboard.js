@@ -31,6 +31,7 @@ module.exports = {
         msg.author.send(HELP_MESSAGE);
       } else if (args[0].toLowerCase() === 'create') {
         var leaderboardName = args[1];
+        var sortType = args[2];
 
         if  (typeof leaderboardName == 'undefined') {
           msg.channel.send(`Missing leaderboard name.  Invoke \"!leaderboard LEADERBOARD_NAME\"`);
@@ -39,7 +40,11 @@ module.exports = {
           msg.channel.send(`This leaderboard already exists`);
           return;
         }
-        
+
+        db.child(leaderboardName).update({
+          sort_type: sortType.toLowerCase,
+        });
+
         db.child(leaderboardName).push({
           username: "creation_entry",
           score: 0
