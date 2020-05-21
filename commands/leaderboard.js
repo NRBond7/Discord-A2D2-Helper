@@ -24,7 +24,7 @@ Example: \"!leaderboard removefrom PunsLeaderboard A2D2Bot 9000\"\n\n
       `);
     }
 
-    // arg0 - leaderboard name
+    // arg0 - leaderboard name  
     // arg1 - username
     // arg2 - value
 
