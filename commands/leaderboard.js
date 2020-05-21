@@ -87,7 +87,7 @@ module.exports = {
           return;
         }
 
-        var leaderboardStandings = `\`\`\`\*\*${leaderboardName} Top 10\*\*\n`;
+        var leaderboardStandings = `\`\`\`**${leaderboardName} Top 10**\n`;
         leaderboardStandings += `----------------------------------------\n`;
 
         var sortingType = snapshot.child(leaderboardName).val().sort_type;
@@ -100,7 +100,8 @@ module.exports = {
             reversedData.forEach(element => {
               var spaceAmount = `${element.username}`.length + `${element.score}`.length;
               var space = new Array(NUM_ENTRY_CHARACTERS - spaceAmount).join(' ');
-              var entry = `${element.username}${space}${element.score}` + "\n";
+              var entry = `${element.username}${space}${element.score}\n`;
+              console.info(entry);
               leaderboardStandings += entry;
             });
           });
@@ -109,7 +110,8 @@ module.exports = {
             snapshot.forEach(function(childSnapshot) { 
               var spaceAmount = `${childSnapshot.val().username}`.length + `${childSnapshot.val().score}`.length;
               var space = new Array(NUM_ENTRY_CHARACTERS - spaceAmount).join(' ');
-              var entry = `${childSnapshot.val().username}${space}${childSnapshot.val().score}` + "\n";
+              var entry = `${childSnapshot.val().username}${space}${childSnapshot.val().score}\n`;
+              console.info(entry);
               leaderboardStandings += entry;
             });
           });
