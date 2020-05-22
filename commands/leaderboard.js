@@ -202,6 +202,7 @@ function handleGetLeaderboardData(args, snapshot, msg, db) {
 }
 
 function getLeaderBoardData(snapshot, sortType) {
+  var leaderboardStandings = ""
   var data = []
   snapshot.forEach(function(childSnapshot) { data.push({username: childSnapshot.val().username, score: childSnapshot.val().score })})
   if (sortType === SORT_TYPE_HIGHEST) data = data.sort(function (a, b) { return b.score - a.score })
