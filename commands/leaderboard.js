@@ -123,10 +123,7 @@ module.exports = {
             }
             snapshot.forEach(function(childSnapshot) { 
               console.info(`child: ${JSON.stringify(childSnapshot)}`);
-              console.info(`child score: ${childSnapshot.val().score}`);
-              console.info(`score: ${score}`);
-              console.info(`comparison: ${childSnapshot.val().score == score}`);
-              if (childSnapshot.val().score === score) childSnapshot.remove()
+              if (childSnapshot.val().score == score) childSnapshot.remove()
                 .then(function() {
                   console.info(`Entry deleted`);
                   msg.channel.send(`Entry deleted`);
