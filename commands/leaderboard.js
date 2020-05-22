@@ -138,11 +138,6 @@ module.exports = {
             })
           },
           function(error) {
-            console.info(`Remove error: ${error}`);
-            msg.channel.send(`Failed to delete entry.  It may not exist.`);
-            return;
-          },
-          function(error) {
             console.info(`Snapshot error: ${error}`);
             msg.channel.send(`Failed to delete entry.  It may not exist.`);
             return;
