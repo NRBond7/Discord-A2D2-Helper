@@ -50,9 +50,9 @@ module.exports = {
       } else if (args[0].toLowerCase() === 'help') {
         handleHelp(msg)
       } else if (args[0].toLowerCase() === 'create') {
-        handleCreate(args, msg, db)
+        handleCreate(args, msg, snapshot, db)
       } else if (args[0].toLowerCase() === 'delete') {
-        handleDelete(args, msg, db)
+        handleDelete(args, msg, snapshot, db)
       } else if (args[0].toLowerCase() === 'add') {
         handleAdd(args, snapshot, db, msg)
       } else if (args[0].toLowerCase() === 'remove') {
@@ -74,7 +74,7 @@ function handleHelp(msg) {
   msg.author.send(TEXT_HELP_MESSAGE)
 }
 
-function handleCreate(args, msg, db) {
+function handleCreate(args, msg, snapshot, db) {
   var leaderboardName = args[1]
   var sortType = args[2]
 
@@ -102,7 +102,7 @@ function handleCreate(args, msg, db) {
   msg.channel.send(`Leaderboard made!`)
 }
 
-function handleDelete(args, msg, db) {
+function handleDelete(args, msg, snapshot, db) {
   var leaderboardName = args[1]
 
   if  (typeof leaderboardName == 'undefined') {
