@@ -74,11 +74,48 @@ module.exports = {
             msg.channel.send(`Failed to delete leaderboard`);
           });
       } else if (args[0].toLowerCase() === 'addTo') { // addTo
-        // check if leaderboard exists
-        // add entry
+        var leaderboardName = args[1];
+        var username = args[2];
+        var score = args[3];
+        if  (typeof leaderboardName == 'undefined') {
+          msg.channel.send(`Missing leaderboard name.  Invoke \"!leaderboard addTo LEADERBOARD_NAME USERNAME SCORE\"`);
+          return;
+        } else if (!snapshot.hasChild(leaderboardName)) {
+          msg.channel.send(`This leaderboard does not exist`);
+          return;
+        } else if (typeof username == 'undefined') {
+          msg.channel.send(`Missing usernam.  Invoke \"!leaderboard addTo LEADERBOARD_NAME USERNAME SCORE\"`);
+          return;
+        } else if (typeof score == 'undefined') {
+          msg.channel.send(`Missing score.  Invoke \"!leaderboard addTo LEADERBOARD_NAME USERNAME SCORE\"`);
+          return;
+        }
+
+        db.child(leaderboardName).child("entries").push({
+          username: username,
+          score: score
+        });
+        msg.channel.send(`Entry added!  Type \"!leaderboard ${leaderboardName}\" to see the updated standings!`);
       } else if (args[0].toLowerCase() === 'removeFrom') { // removeFrom
-        // check if leaderboard exists
+        var leaderboardName = args[1];
+        var username = args[2];
+        var score = args[3];
+        if  (typeof leaderboardName == 'undefined') {
+          msg.channel.send(`Missing leaderboard name.  Invoke \"!leaderboard removeFrom LEADERBOARD_NAME USERNAME SCORE\"`);
+          return;
+        } else if (!snapshot.hasChild(leaderboardName)) {
+          msg.channel.send(`This leaderboard does not exist`);
+          return;
+        } else if (typeof username == 'undefined') {
+          msg.channel.send(`Missing usernam.  Invoke \"!leaderboard removeFrom LEADERBOARD_NAME USERNAME SCORE\"`);
+          return;
+        } else if (typeof score == 'undefined') {
+          msg.channel.send(`Missing score.  Invoke \"!leaderboard removeFrom LEADERBOARD_NAME USERNAME SCORE\"`);
+          return;
+        }
+
         // remove matching entry
+
       } else { // get specific leaderboard's data
         var leaderboardName = args[0];
 
