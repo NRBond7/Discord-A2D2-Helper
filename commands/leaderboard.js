@@ -46,11 +46,11 @@ module.exports = {
 
     db.once("value", function(snapshot) {
       if (args.length == 0) {
-        handleEmptyCommand()
+        handleEmptyCommand(msg, snapshot)
       } else if (args[0].toLowerCase() === 'help') {
-        handleHelp()
+        handleHelp(msg)
       } else if (args[0].toLowerCase() === 'create') {
-        handleCreate()
+        handleCreate(msg, db)
       } else if (args[0].toLowerCase() === 'delete') {
         handleDelete(args, msg, db)
       } else if (args[0].toLowerCase() === 'add') {
