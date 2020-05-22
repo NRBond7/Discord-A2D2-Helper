@@ -137,12 +137,11 @@ module.exports = {
                 });
               }
             })
-            console.info(`Failed to find entry`);
-            msg.channel.send(`Failed to delete entry.  It may not exist.`);
           },
           function(error) {
             console.info(`Remove error: ${error}`);
             msg.channel.send(`Failed to delete entry.  It may not exist.`);
+            return;
           });
       } else { // get specific leaderboard's data
         var leaderboardName = args[0];
