@@ -114,7 +114,11 @@ module.exports = {
           return;
         }
 
-        snapshot.child(`${leaderboardName}/entries`).orderByChild('username').equalTo(username).once("value", function(snapshot) {
+        snapshot.child(`${leaderboardName}/entries`).ref.orderByChild('username').equalTo(username).once("value", function(snapshot) {
+          if (!snapshot.exists) {
+            msg.channel.send(`Failed to delete entry.  It may not exist.`);
+            return;
+          }
           snapshot.forEach(function(childSnapshot) { 
             if (childSnapshot.score === score) childSnapshot.remove()
               .then(function() {
