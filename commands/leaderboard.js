@@ -1,11 +1,16 @@
 const TEXT_HELP_MESSAGE = 
 `Welcome to A2D2 Bot\'s leaderboard!\n\n
+Get a list of the existing leaderboards:\n
+\"!leaderboard\"\n\n
 A leaderboard can be looked-up using:\n
 \"!leaderboard LEADERBOARD_NAME\"\n\n
 To create a leaderboard:\n
 \"!leaderboard create LEADERBOARD_NAME SORT_TYPE\"\n
 Example: \"!leaderboard create PunsLeaderboard highest\"\n
 Example: \"!leaderboard create PunsLeaderboard lowest\"\n\n
+To delete a leaderboard:\n
+\"!leaderboard delete LEADERBOARD_NAME\"\n
+Example: \"!leaderboard delete PunsLeaderboard\"\n\n
 To add an entry to existing leaderboard:\n
 \"!leaderboard add LEADERBOARD_NAME USERNAME LEADERBOARD_VALUE\"\n
 Example: \"!leaderboard add PunsLeaderboard A2D2Bot 9000\"\n\n
