@@ -125,19 +125,17 @@ module.exports = {
             snapshot.forEach(function(childSnapshot) { 
               console.info(`child: ${JSON.stringify(childSnapshot)}`);
               if (childSnapshot.val().score == score) {
+                entryFoundAndDeleted = true;
                 db.child(`${leaderboardName}/entries/${childSnapshot.key}`).remove()
                 .then(function() {
-                  entryFoundAndDeleted = true;
                   console.info(`Entry deleted`);
                   msg.channel.send(`Entry deleted`);
-                  return;
                 })
                 .catch(function(error) {
                   console.info(`Failed to delete entry from snapshot.`);
                   msg.channel.send(`Failed to delete entry.  It may not exist.`);
-                  return;
                 });
-                return;
+                return true;
               }
             })
           },
