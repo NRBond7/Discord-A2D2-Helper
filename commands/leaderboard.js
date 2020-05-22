@@ -123,7 +123,7 @@ function handleDelete(args, msg, snapshot, db) {
 }
 
 function handleAdd(args, snapshot, db, msg) {
-  var isMissingArgument = checkForMissingArguments(args, snapshot, COMMAND_ADD)
+  var isMissingArgument = checkForMissingArguments(args, msg, snapshot, COMMAND_ADD)
   if (isMissingArgument) return
 
   var leaderboardName = args[1]
@@ -138,7 +138,7 @@ function handleAdd(args, snapshot, db, msg) {
 }
 
 function handleRemove(args, snapshot, db, msg) {
-  checkForMissingArguments(args, snapshot, COMMAND_REMOVE)
+  var isMissingArgument = checkForMissingArguments(args, msg, snapshot, COMMAND_REMOVE)
   if (isMissingArgument) return
 
   var leaderboardName = args[1]
@@ -218,7 +218,7 @@ function getLeaderBoardData(snapshot, sortType) {
   return leaderboardStandings
 }
 
-function checkForMissingArguments(args, snapshot, command) {
+function checkForMissingArguments(args, msg, snapshot, command) {
   var leaderboardName = args[1]
   var username = args[2]
   var score = args[3]
