@@ -21,7 +21,7 @@ const COMMAND_ADD = `Invoke \"!leaderboard add LEADERBOARD_NAME USERNAME SCORE\"
 const COMMAND_REMOVE = `Invoke \"!leaderboard remove LEADERBOARD_NAME USERNAME SCORE\"`
 
 const TEXT_DISCORD_CODE_BLOCK = `\`\`\``
-const TEXT_HEADER_LINE = `----------------------------------------`
+const TEXT_HEADER_LINE = `------------------------------`
 const TEXT_GET_LEADERBOARDS_RESULT = `${TEXT_DISCORD_CODE_BLOCK}Here are the existing leaderboards:\n${TEXT_HEADER_LINE}\n`
 
 const SORT_TYPE_HIGHEST = `highest`
