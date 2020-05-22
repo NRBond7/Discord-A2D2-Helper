@@ -117,19 +117,24 @@ module.exports = {
         db.child(`${leaderboardName}/entries`).orderByChild("username").equalTo(username).once("value", 
           function(snapshot) {
             if (!snapshot.exists) {
+              console.info(`Failed to delete entry.  Snapshot does not exist.`);
               msg.channel.send(`Failed to delete entry.  It may not exist.`);
               return;
             }
             snapshot.forEach(function(childSnapshot) { 
+              console.info(`Score: ${childSnapshot.score}`);
               if (childSnapshot.score === score) childSnapshot.remove()
                 .then(function() {
+                  console.info(`Entry deleted`);
                   msg.channel.send(`Entry deleted`);
                 })
                 .catch(function(error) {
+                  console.info(`Failed to delete entry from snapshot.`);
                   msg.channel.send(`Failed to delete entry.  It may not exist.`);
                 });
-                return;
+              return;
             })
+            console.info(`Failed to find entry`);
             msg.channel.send(`Failed to delete entry.  It may not exist.`);
           },
           function(error) {
