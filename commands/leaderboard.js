@@ -207,7 +207,7 @@ function getLeaderBoardData(snapshot, sortType) {
   if (sortType === SORT_TYPE_HIGHEST) data = data.sort(function (a, b) { return b.score - a.score })
 
   reversedData.forEach(element => {
-    if (element.username === LEADERBOARD_CREATION_USERNAME) continue
+    if (element.username === LEADERBOARD_CREATION_USERNAME) return
     var spaceAmount = `${element.username}`.length + `${element.score}`.length
     var space = new Array(TEXT_HEADER_LINE.length - spaceAmount).join(' ')
     var entry = `${element.username}${space}${element.score}\n`
