@@ -114,22 +114,27 @@ module.exports = {
           return;
         }
 
-        db.child(`${leaderboardName}/entries`).orderByChild('username').equalTo(username).once("value", function(snapshot) {
-          if (!snapshot.exists) {
-            msg.channel.send(`Failed to delete entry.  It may not exist.`);
-            return;
-          }
-          snapshot.forEach(function(childSnapshot) { 
-            if (childSnapshot.score === score) childSnapshot.remove()
-              .then(function() {
-                msg.channel.send(`Entry deleted`);
-              })
-              .catch(function(error) {
-                msg.channel.send(`Failed to delete entry.  It may not exist.`);
-              });
+        db.child(`${leaderboardName}/entries`).orderByChild('username').equalTo(username).once("value", 
+          function(snapshot) {
+            if (!snapshot.exists) {
+              msg.channel.send(`Failed to delete entry.  It may not exist.`);
               return;
-          })
-        });
+            }
+            snapshot.forEach(function(childSnapshot) { 
+              if (childSnapshot.score === score) childSnapshot.remove()
+                .then(function() {
+                  msg.channel.send(`Entry deleted`);
+                })
+                .catch(function(error) {
+                  msg.channel.send(`Failed to delete entry.  It may not exist.`);
+                });
+                return;
+            })
+          },
+          function(error) {
+            console.info(`Remove error: ${error}`);
+            msg.channel.send(`Failed to delete entry.  It may not exist.`);
+          });
       } else { // get specific leaderboard's data
         var leaderboardName = args[0];
 
