@@ -116,16 +116,14 @@ module.exports = {
 
         db.child(`${leaderboardName}/entries`).orderByChild("username").equalTo(username).once("value", 
           function(snapshot) {
-            console.info(`snapshot: ${snapshot.toJSON}`);
-            console.info(`snapshot exists: ${snapshot.exists}`);
-            console.info(`snapshot numChildren: ${snapshot.numChildren}`);
-            if (!snapshot.exists || snapshot.numChildren == 0) {
+            console.info(`snapshot: ${snapshot.toJSON()}`);
+            if (!snapshot.exists() || snapshot.numChildren() == 0) {
               console.info(`Failed to delete entry.  Snapshot does not exist.`);
               msg.channel.send(`Failed to delete entry.  It may not exist.`);
               return;
             }
             snapshot.forEach(function(childSnapshot) { 
-              console.info(`child: ${childSnapshot.toJSON}`);
+              console.info(`child: ${childSnapshot.toJSON()}`);
               if (childSnapshot.val().score == score) {
                 db.child(`${leaderboardName}/entries/${childSnapshot.key}`).remove()
                 .then(function() {
