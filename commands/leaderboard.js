@@ -4,13 +4,13 @@ A leaderboard can be looked-up using:\n
 \"!leaderboard LEADERBOARD_NAME\"\n\n
 To create a leaderboard:\n
 \"!leaderboard create LEADERBOARD_NAME SORT_TYPE\"\n
-Example: \"!leaderboard create PunsLeaderboard A2D2Bot highest\"\n
-Example: \"!leaderboard create PunsLeaderboard A2D2Bot lowest\"\n\n
+Example: \"!leaderboard create PunsLeaderboard highest\"\n
+Example: \"!leaderboard create PunsLeaderboard lowest\"\n\n
 To add an entry to existing leaderboard:\n
-\"!leaderboard add LEADERBOARD_NAME USERNAME LEAADERBOARD_VALUE\"\n
+\"!leaderboard add LEADERBOARD_NAME USERNAME LEADERBOARD_VALUE\"\n
 Example: \"!leaderboard add PunsLeaderboard A2D2Bot 9000\"\n\n
 To remove an entry to existing leaderboard:\n
-\"!leaderboard remove LEADERBOARD_NAME USERNAME LEAADERBOARD_VALUE\"\n
+\"!leaderboard remove LEADERBOARD_NAME USERNAME LEADERBOARD_VALUE\"\n
 Example: \"!leaderboard remove PunsLeaderboard A2D2Bot 9000\"\n\n`
 
 const MISSING_LEADERBOARD_NAME = `Missing leaderboard name.`
@@ -50,7 +50,7 @@ module.exports = {
       } else if (args[0].toLowerCase() === 'help') {
         handleHelp(msg)
       } else if (args[0].toLowerCase() === 'create') {
-        handleCreate(msg, db)
+        handleCreate(args, msg, db)
       } else if (args[0].toLowerCase() === 'delete') {
         handleDelete(args, msg, db)
       } else if (args[0].toLowerCase() === 'add') {
@@ -74,7 +74,7 @@ function handleHelp(msg) {
   msg.author.send(TEXT_HELP_MESSAGE)
 }
 
-function handleCreate(msg, db) {
+function handleCreate(args, msg, db) {
   var leaderboardName = args[1]
   var sortType = args[2]
 
