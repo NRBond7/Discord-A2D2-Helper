@@ -130,6 +130,7 @@ module.exports = {
               return;
           })
         });
+        msg.channel.send(`Failed to delete entry.  It may not exist.`);
       } else { // get specific leaderboard's data
         var leaderboardName = args[0];
 
