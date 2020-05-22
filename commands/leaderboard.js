@@ -73,7 +73,7 @@ module.exports = {
           .catch(function(error) {
             msg.channel.send(`Failed to delete leaderboard`);
           });
-      } else if (args[0].toLowerCase() === 'addTo') { // addTo
+      } else if (args[0].toLowerCase() === 'addto' || args[0].toLowerCase() === 'add') { // addTo
         var leaderboardName = args[1];
         var username = args[2];
         var score = args[3];
@@ -96,7 +96,7 @@ module.exports = {
           score: score
         });
         msg.channel.send(`Entry added!  Type \"!leaderboard ${leaderboardName}\" to see the updated standings!`);
-      } else if (args[0].toLowerCase() === 'removeFrom') { // removeFrom
+      } else if (args[0].toLowerCase() === 'removefrom') { // removeFrom
         var leaderboardName = args[1];
         var username = args[2];
         var score = args[3];
