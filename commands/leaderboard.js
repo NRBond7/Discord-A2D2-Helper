@@ -190,12 +190,12 @@ function handleGetLeaderboardData(args, snapshot, msg, db) {
    var sortingType = snapshot.child(leaderboardName).val().sort_type
    if (sortingType === SORT_TYPE_HIGHEST) {
      db.child(`${leaderboardName}/${DATABASE_KEY_ENTRIES}`).orderByChild(DATABASE_KEY_SCORE).limitToLast(LEADERBOARD_COUNT).once("value", function(snapshot) {
-       var leaderboardStandings = getLeaderBoardData(snapshot, sortingType)
+       leaderboardStandings += getLeaderBoardData(snapshot, sortingType)
        msg.channel.send(leaderboardStandings)
      })
    } else if (sortingType === SORT_TYPE_LOWEST) {
      db.child(`${leaderboardName}/${DATABASE_KEY_ENTRIES}`).orderByChild(DATABASE_KEY_SCORE).limitToFirst(LEADERBOARD_COUNT).once("value", function(snapshot) {
-       var leaderboardStandings = getLeaderBoardData(snapshot, sortingType)
+       leaderboardStandings += getLeaderBoardData(snapshot, sortingType)
        msg.channel.send(leaderboardStandings)
      })
    }
