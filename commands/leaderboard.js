@@ -7,11 +7,11 @@ To create a leaderboard:\n
 Example: \"!leaderboard create PunsLeaderboard A2D2Bot highest\"\n
 Example: \"!leaderboard create PunsLeaderboard A2D2Bot lowest\"\n\n
 To add an entry to existing leaderboard:\n
-\"!leaderboard addto LEADERBOARD_NAME USERNAME LEAADERBOARD_VALUE\"\n
-Example: \"!leaderboard addto PunsLeaderboard A2D2Bot 9000\"\n\n
+\"!leaderboard add LEADERBOARD_NAME USERNAME LEAADERBOARD_VALUE\"\n
+Example: \"!leaderboard add PunsLeaderboard A2D2Bot 9000\"\n\n
 To remove an entry to existing leaderboard:\n
-\"!leaderboard removefrom LEADERBOARD_NAME USERNAME LEAADERBOARD_VALUE\"\n
-Example: \"!leaderboard removefrom PunsLeaderboard A2D2Bot 9000\"\n\n`;
+\"!leaderboard remove LEADERBOARD_NAME USERNAME LEAADERBOARD_VALUE\"\n
+Example: \"!leaderboard remove PunsLeaderboard A2D2Bot 9000\"\n\n`;
 const NUM_ENTRY_CHARACTERS = 40;
 
 module.exports = {
@@ -38,7 +38,7 @@ module.exports = {
           msg.channel.send(`Missing leaderboard name.  Invoke \"!leaderboard create LEADERBOARD_NAME\"`);
           return;
         } else if (snapshot.hasChild(leaderboardName)) {
-          msg.channel.send(`This leaderboard already exists`);
+          msg.channel.send(`Leaderboard \"${leaderboardName}\" already exists`);
           return;
         }
 
@@ -62,7 +62,7 @@ module.exports = {
           msg.channel.send(`Missing leaderboard name.  Invoke \"!leaderboard delete LEADERBOARD_NAME\"`);
           return;
         } else if (!snapshot.hasChild(leaderboardName)) {
-          msg.channel.send(`This leaderboard does not exist`);
+          msg.channel.send(`Leaderboard \"${leaderboardName}\" does not exist`);
           return;
         }
 
@@ -71,23 +71,23 @@ module.exports = {
             msg.channel.send(`Leaderboard deleted`);
           })
           .catch(function(error) {
-            msg.channel.send(`Failed to delete leaderboard`);
+            msg.channel.send(`Failed to delete leaderboard.  It may not exist.`);
           });
-      } else if (args[0].toLowerCase() === 'addto' || args[0].toLowerCase() === 'add') { // addTo
+      } else if (args[0].toLowerCase() === 'add') { // add
         var leaderboardName = args[1];
         var username = args[2];
         var score = args[3];
         if  (typeof leaderboardName == 'undefined') {
-          msg.channel.send(`Missing leaderboard name.  Invoke \"!leaderboard addTo LEADERBOARD_NAME USERNAME SCORE\"`);
+          msg.channel.send(`Missing leaderboard name.  Invoke \"!leaderboard add LEADERBOARD_NAME USERNAME SCORE\"`);
           return;
         } else if (!snapshot.hasChild(leaderboardName)) {
-          msg.channel.send(`This leaderboard does not exist`);
+          msg.channel.send(`Leaderboard \"${leaderboardName}\" does not exist`);
           return;
         } else if (typeof username == 'undefined') {
-          msg.channel.send(`Missing usernam.  Invoke \"!leaderboard addTo LEADERBOARD_NAME USERNAME SCORE\"`);
+          msg.channel.send(`Missing username.  Invoke \"!leaderboard add LEADERBOARD_NAME USERNAME SCORE\"`);
           return;
         } else if (typeof score == 'undefined') {
-          msg.channel.send(`Missing score.  Invoke \"!leaderboard addTo LEADERBOARD_NAME USERNAME SCORE\"`);
+          msg.channel.send(`Missing score.  Invoke \"!leaderboard add LEADERBOARD_NAME USERNAME SCORE\"`);
           return;
         }
 
@@ -96,31 +96,41 @@ module.exports = {
           score: score
         });
         msg.channel.send(`Entry added!  Type \"!leaderboard ${leaderboardName}\" to see the updated standings!`);
-      } else if (args[0].toLowerCase() === 'removefrom') { // removeFrom
+      } else if (args[0].toLowerCase() === 'remove') { // remove
         var leaderboardName = args[1];
         var username = args[2];
         var score = args[3];
         if  (typeof leaderboardName == 'undefined') {
-          msg.channel.send(`Missing leaderboard name.  Invoke \"!leaderboard removeFrom LEADERBOARD_NAME USERNAME SCORE\"`);
+          msg.channel.send(`Missing leaderboard name.  Invoke \"!leaderboard remove LEADERBOARD_NAME USERNAME SCORE\"`);
           return;
         } else if (!snapshot.hasChild(leaderboardName)) {
-          msg.channel.send(`This leaderboard does not exist`);
+          msg.channel.send(`Leaderboard \"${leaderboardName}\" does not exist`);
           return;
         } else if (typeof username == 'undefined') {
-          msg.channel.send(`Missing usernam.  Invoke \"!leaderboard removeFrom LEADERBOARD_NAME USERNAME SCORE\"`);
+          msg.channel.send(`Missing username.  Invoke \"!leaderboard remove LEADERBOARD_NAME USERNAME SCORE\"`);
           return;
         } else if (typeof score == 'undefined') {
-          msg.channel.send(`Missing score.  Invoke \"!leaderboard removeFrom LEADERBOARD_NAME USERNAME SCORE\"`);
+          msg.channel.send(`Missing score.  Invoke \"!leaderboard remove LEADERBOARD_NAME USERNAME SCORE\"`);
           return;
         }
 
-        // remove matching entry
-
+        snapshot.child(`${leaderboardName}/entries`).orderByChild('username').equalTo(username).once("value", function(snapshot) {
+          snapshot.forEach(function(childSnapshot) { 
+            if (childSnapshot.score === score) childSnapshot.remove()
+              .then(function() {
+                msg.channel.send(`Entry deleted`);
+              })
+              .catch(function(error) {
+                msg.channel.send(`Failed to delete entry.  It may not exist.`);
+              });
+              return;
+          })
+        });
       } else { // get specific leaderboard's data
         var leaderboardName = args[0];
 
         if (!snapshot.hasChild(leaderboardName)) {
-          msg.channel.send(`This leaderboard does not exist`);
+          msg.channel.send(`Leaderboard \"${leaderboardName}\" does not exist`);
           return;
         }
 
