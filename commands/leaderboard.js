@@ -117,7 +117,7 @@ module.exports = {
         db.child(`${leaderboardName}/entries`).orderByChild("username").equalTo(username).once("value", 
           function(snapshot) {
             console.info(`snapshot: ${JSON.stringify(snapshot)}`);
-            if (!snapshot.exists || snapshot.numChildren == 0) {
+            if (typeof snapshot == 'undefined' || !snapshot.exists || snapshot.numChildren == 0) {
               console.info(`Failed to delete entry.  Snapshot does not exist.`);
               msg.channel.send(`Failed to delete entry.  It may not exist.`);
               return;
