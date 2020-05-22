@@ -114,7 +114,7 @@ module.exports = {
           return;
         }
 
-        db.child(`${leaderboardName}/entries`).orderByChild('username').equalTo(username).once("value", 
+        db.child(`${leaderboardName}/entries`).orderByChild("username").equalTo(username).once("value", 
           function(snapshot) {
             if (!snapshot.exists) {
               msg.channel.send(`Failed to delete entry.  It may not exist.`);
@@ -130,6 +130,7 @@ module.exports = {
                 });
                 return;
             })
+            msg.channel.send(`Failed to delete entry.  It may not exist.`);
           },
           function(error) {
             console.info(`Remove error: ${error}`);
@@ -155,6 +156,7 @@ module.exports = {
             var reversedData = data.sort(function (a, b) { return b.score - a.score; });
 
             reversedData.forEach(element => {
+              // todo: skip creation_entry
               var spaceAmount = `${element.username}`.length + `${element.score}`.length;
               var space = new Array(NUM_ENTRY_CHARACTERS - spaceAmount).join(' ');
               var entry = `${element.username}${space}${element.score}\n`;
@@ -165,7 +167,8 @@ module.exports = {
           });
         } else {
           db.child(`${leaderboardName}/entries`).orderByChild("score").limitToFirst(10).once("value", function(snapshot) {
-            snapshot.forEach(function(childSnapshot) { 
+            snapshot.forEach(function(childSnapshot) {
+              // todo: skip creation_entry
               var spaceAmount = `${childSnapshot.val().username}`.length + `${childSnapshot.val().score}`.length;
               var space = new Array(NUM_ENTRY_CHARACTERS - spaceAmount).join(' ');
               var entry = `${childSnapshot.val().username}${space}${childSnapshot.val().score}\n`;
