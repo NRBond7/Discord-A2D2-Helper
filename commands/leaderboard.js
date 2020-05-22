@@ -114,7 +114,7 @@ module.exports = {
           return;
         }
 
-        snapshot.child(`${leaderboardName}/entries`).ref.orderByChild('username').equalTo(username).once("value", function(snapshot) {
+        db.child(`${leaderboardName}/entries`).orderByChild('username').equalTo(username).once("value", function(snapshot) {
           if (!snapshot.exists) {
             msg.channel.send(`Failed to delete entry.  It may not exist.`);
             return;
@@ -130,7 +130,6 @@ module.exports = {
               return;
           })
         });
-        msg.channel.send(`Failed to delete entry.  It may not exist.`);
       } else { // get specific leaderboard's data
         var leaderboardName = args[0];
 
