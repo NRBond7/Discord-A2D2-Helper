@@ -128,12 +128,13 @@ module.exports = {
                 .then(function() {
                   console.info(`Entry deleted`);
                   msg.channel.send(`Entry deleted`);
+                  return;
                 })
                 .catch(function(error) {
                   console.info(`Failed to delete entry from snapshot.`);
                   msg.channel.send(`Failed to delete entry.  It may not exist.`);
+                  return;
                 });
-              return;
               }
             })
             console.info(`Failed to find entry`);
