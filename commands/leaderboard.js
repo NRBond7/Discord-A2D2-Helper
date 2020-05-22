@@ -122,7 +122,7 @@ module.exports = {
               return;
             }
             snapshot.forEach(function(childSnapshot) { 
-              console.info(`Score: ${childSnapshot.score}`);
+              console.info(`child: ${childSnapshot}`);
               if (childSnapshot.score === score) childSnapshot.remove()
                 .then(function() {
                   console.info(`Entry deleted`);
