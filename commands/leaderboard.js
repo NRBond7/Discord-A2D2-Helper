@@ -114,6 +114,7 @@ module.exports = {
           return;
         }
 
+        var entryFoundAndDeleted = false;
         db.child(`${leaderboardName}/entries`).orderByChild("username").equalTo(username).once("value", 
           function(snapshot) {
             if (!snapshot.exists) {
@@ -126,6 +127,7 @@ module.exports = {
               if (childSnapshot.val().score == score) {
                 db.child(`${leaderboardName}/entries/${childSnapshot.key}`).remove()
                 .then(function() {
+                  entryFoundAndDeleted = true;
                   console.info(`Entry deleted`);
                   msg.channel.send(`Entry deleted`);
                   return;
@@ -135,6 +137,7 @@ module.exports = {
                   msg.channel.send(`Failed to delete entry.  It may not exist.`);
                   return;
                 });
+                return;
               }
             })
           },
@@ -143,6 +146,11 @@ module.exports = {
             msg.channel.send(`Failed to delete entry.  It may not exist.`);
             return;
           });
+
+          if (!entryFoundAndDeleted) {
+            console.info(`Failed to find entry`);
+            msg.channel.send(`Failed to delete entry.  It may not exist.`);
+          }
       } else { // get specific leaderboard's data
         var leaderboardName = args[0];
 
